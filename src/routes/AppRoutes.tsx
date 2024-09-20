@@ -25,6 +25,7 @@ const AppRoutes = () => {
       {/* Film */}
       <Route path="/film/:id" element={<FilmDetail />} />
       <Route path="/film/form" element={<FilmForm />} />
+      <Route path="/film/form/:id" element={<FilmForm />} />
       <Route path="/film/list" element={<FilmList />} />
 
       {/* Genre */}

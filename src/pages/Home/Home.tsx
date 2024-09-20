@@ -1,7 +1,23 @@
-import React from 'react';
+import { useEffect } from 'react';
 import CardExample from '../../components/CardExample';
+import { useCategoriesStore } from '../../store/categoriesStore';
+import { fetchData } from '../../utils/helpers';
 
 const Home = () => {
+  const setCategories = useCategoriesStore((state) => state.setCategories);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await fetchData(`${import.meta.env.VITE_API_URL}/genre`);
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, [setCategories]);
   return (
     <>
       <div className="h-screen flex flex-col justify-center">
