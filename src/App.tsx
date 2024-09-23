@@ -1,12 +1,13 @@
 import Layout from './layout/layout';
-import Filters from './components/Filters/Filters';
-import Home from './pages/Home/Home';
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from './routes/AppRoutes';
 
 function App() {
   return (
     <Layout>
-      <Filters />
-      <Home />
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
     </Layout>
   );
 }
