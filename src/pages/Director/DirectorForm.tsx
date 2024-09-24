@@ -94,7 +94,7 @@ export default function DirectorCRUD() {
   }
 
   return (
-    <div className="min-h-lvh bg-gray-900 text-white p-8 w-full md:w-3/4 lg:w-3/4 mx-auto max-h-3.5">
+    <div className="min-h-screen bg-gray-900 text-white p-8 w-full md:w-3/4 lg:w-4/5 mx-auto max-h-3.5">
       <h1 className="text-3xl font-bold mb-6">Manejo Directores</h1>
       <Button
         onPress={() => {
