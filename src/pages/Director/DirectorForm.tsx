@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Table,
   TableHeader,
@@ -13,31 +13,21 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
+  Tooltip
 } from "@nextui-org/react"
+import { toast } from 'react-toastify'
+
+import DeleteIcon from '../../components/icons/DeleteIcon'
+import EditIcon from '../../components/icons/EditIcon'
 import { DirectorType } from '../../types/Director'
-import { getAllDirectors } from '../../services/directorService'
-
-const mockCreateDirector = async (director: DirectorType) => {
-  await new Promise(resolve => setTimeout(resolve, 500))
-  return { ...director, _id: Date.now().toString(), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
-}
-
-const mockUpdateDirector = async (director: DirectorType) => {
-  await new Promise(resolve => setTimeout(resolve, 500))
-  return { ...director, updatedAt: new Date().toISOString() }
-}
-
-const mockDeleteDirector = async (id: string) => {
-  await new Promise(resolve => setTimeout(resolve, 500))
-  return true
-}
+import { getAllDirectors, createDirector, deleteDirector, updateDirector } from '../../services/directorService'
 
 export default function DirectorCRUD() {
-  const [directors, setDirectors] = useState<DirectorType[]>([])
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [currentDirector, setCurrentDirector] = useState<DirectorType>({ name: '', status: false })
-  const [isEditing, setIsEditing] = useState(false)
+  const [directors, setDirectors] = useState<DirectorType[]>([] as DirectorType[])
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [currentDirector, setCurrentDirector] = useState<DirectorType>({ name: '', status: 'inactivo' })
+  const [isEditing, setIsEditing] = useState<boolean>(false)
 
   useEffect(() => {
     fetchDirectors()
@@ -48,17 +38,37 @@ export default function DirectorCRUD() {
     setDirectors(data)
   }
 
-  const handleSubmit = async (e: HTMLFormElement) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (isEditing) {
-      const updated = await mockUpdateDirector(currentDirector)
+      const updated = await updateDirector(currentDirector)
       setDirectors(directors.map(d => d._id === updated._id ? updated : d))
+      toast.warn('Director Actualizado', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark"
+      });
     } else {
-      const created = await mockCreateDirector(currentDirector)
+      const created = await createDirector(currentDirector)
       setDirectors([...directors, created])
+      toast.info('Director creado', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark"
+      });
     }
     setIsModalOpen(false)
-    setCurrentDirector({ name: '', status: false })
+    setCurrentDirector({ name: '', status: 'inactivo' })
     setIsEditing(false)
   }
 
@@ -69,46 +79,60 @@ export default function DirectorCRUD() {
   }
 
   const handleDelete = async (id: string) => {
-    await mockDeleteDirector(id)
+    await deleteDirector(id)
     setDirectors(directors.filter(d => d._id !== id))
+    toast.success('Director eliminado correctamente', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark"
+    })
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
-      <h1 className="text-3xl font-bold mb-6">Director Management</h1>
+    <div className="min-h-lvh bg-gray-900 text-white p-8 w-full md:w-3/4 lg:w-3/4 mx-auto max-h-3.5">
+      <h1 className="text-3xl font-bold mb-6">Manejo Directores</h1>
       <Button
         onPress={() => {
-          setCurrentDirector({ name: '', status: false })
+          setCurrentDirector({ name: '', status: 'inactivo' })
           setIsEditing(false)
           setIsModalOpen(true)
         }}
         className="mb-4 bg-gray-700 text-white"
       >
-        Add New Director
+        Agregar Director
       </Button>
 
       <Table aria-label="Directors table" className="bg-gray-800">
         <TableHeader>
-          <TableColumn>NAME</TableColumn>
-          <TableColumn>STATUS</TableColumn>
-          <TableColumn>CREATED AT</TableColumn>
-          <TableColumn>UPDATED AT</TableColumn>
-          <TableColumn>ACTIONS</TableColumn>
+          <TableColumn>NOMBRE</TableColumn>
+          <TableColumn>ESTADO</TableColumn>
+          <TableColumn>FECHA CREACION</TableColumn>
+          <TableColumn>FECHA ACTUALIZACION</TableColumn>
+          <TableColumn>ACCION</TableColumn>
         </TableHeader>
         <TableBody>
           {directors.map((director) => (
-            <TableRow key={director._id}>
+            <TableRow key={director._id} className='py-4 hover:bg-gray-700'>
               <TableCell>{director.name}</TableCell>
-              <TableCell>{director.status ? 'Active' : 'Inactive'}</TableCell>
-              <TableCell>{new Date(director?.createdAt).toLocaleDateString()}</TableCell>
-              <TableCell>{new Date(director.updatedAt).toLocaleDateString()}</TableCell>
-              <TableCell>
-                <Button onPress={() => handleEdit(director)} className="mr-2 bg-gray-600 text-white">
-                  Edit
-                </Button>
-                <Button onPress={() => handleDelete(director._id)} className="bg-red-600 text-white">
-                  Delete
-                </Button>
+              <TableCell>{director.status}</TableCell>
+              <TableCell>{director?.createdAt ? new Date(director.createdAt).toLocaleDateString() : 'N/A'}</TableCell>
+              <TableCell>{director?.updatedAt ? new Date(director.updatedAt).toLocaleDateString() : 'N/A'}</TableCell>
+              <TableCell className="relative flex items-center gap-2">
+                <Tooltip content="Editar Director">
+                  <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                    <EditIcon onClick={() => handleEdit(director)} />
+                  </span>
+                </Tooltip>
+                <Tooltip color="danger" content="Eliminar Director">
+                  <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                    <DeleteIcon onClick={() => director._id && handleDelete(director._id)} />
+                  </span>
+                </Tooltip>
               </TableCell>
             </TableRow>
           ))}
@@ -117,9 +141,9 @@ export default function DirectorCRUD() {
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} className="bg-gray-800 text-white">
         <ModalContent>
-          <ModalHeader>{isEditing ? 'Edit Director' : 'Add New Director'}</ModalHeader>
-          <ModalBody>
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <ModalHeader>{isEditing ? 'Edit Director' : 'Add New Director'}</ModalHeader>
+            <ModalBody>
               <Input
                 label="Name"
                 value={currentDirector.name}
@@ -128,24 +152,24 @@ export default function DirectorCRUD() {
                 className="bg-gray-700 text-white"
               />
               <Checkbox
-                isSelected={currentDirector.status}
-                onValueChange={(value) => setCurrentDirector({ ...currentDirector, status: value })}
+                isSelected={currentDirector.status.toLowerCase() === 'activo' ? true : false}
+                onValueChange={(value) => setCurrentDirector({ ...currentDirector, status: value ? 'Activo' : 'Inactivo' })}
                 className="text-white"
               >
-                Active
+                <span className="text-white">Activo</span>
               </Checkbox>
-            </form>
-          </ModalBody>
-          <ModalFooter>
-            <Button onPress={() => setIsModalOpen(false)} className="bg-gray-600 text-white">
-              Cancel
-            </Button>
-            <Button onPress={handleSubmit} className="bg-blue-600 text-white">
-              {isEditing ? 'Update' : 'Create'}
-            </Button>
-          </ModalFooter>
+            </ModalBody>
+            <ModalFooter>
+              <Button onPress={() => setIsModalOpen(false)} className="bg-gra">
+                Cancelar
+              </Button>
+              <Button type="submit" className="bg-blue-600 text-white">
+                {isEditing ? 'Actualizar' : 'Crear'}
+              </Button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
-    </div>
+    </div >
   )
 }

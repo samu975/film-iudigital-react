@@ -21,6 +21,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-responsive": "^10.0.0",
     "react-router-dom": "^6.26.2",
+    "react-toastify": "^10.0.5",
     "zustand": "^5.0.0-rc.2"
   },
   "devDependencies": {

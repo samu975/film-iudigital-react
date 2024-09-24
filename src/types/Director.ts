@@ -1,7 +1,7 @@
 export type DirectorType = {
   _id?: string
   name: string
-  status: boolean
+  status: string
   createdAt?: Date
   updatedAt?: Date
 }
