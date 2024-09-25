@@ -1,7 +1,7 @@
 export type CreateFilmObject = {
   title: string;
   serial: number;
-  sypnosis: string;
+  synopsis: string;
   coverImage: string;
   releaseYear: Date;
   url: string;
@@ -12,10 +12,10 @@ export type CreateFilmObject = {
 };
 
 export type Film = {
-  id: number;
+  _id: string;
   title: string;
   serial: number;
-  sypnosis: string;
+  synopsis: string;
   coverImage: string;
   releaseYear: Date;
   url: string;

@@ -1,35 +1,49 @@
-import { useEffect } from 'react';
-import CardExample from '../../components/CardExample';
 import { useCategoriesStore } from '../../store/categoriesStore';
-import { fetchData } from '../../utils/helpers';
+import { useDirectorStore } from '../../store/directorStore';
+import { useFetchData } from '../../hooks/useFetch';
+import { useProducerStore } from '../../store/producerStore';
+import { useMediaStore } from '../../store/mediaStore';
+import MovieCard from '../../components/MovieCard';
 
 const Home = () => {
   const setCategories = useCategoriesStore((state) => state.setCategories);
+  const setDirectors = useDirectorStore((state) => state.setDirectors);
+  const setProducers = useProducerStore((state) => state.setProducers);
+  const setMedia = useMediaStore((state) => state.setFilm);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const data = await fetchData(`${import.meta.env.VITE_API_URL}/genre`);
-        setCategories(data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
+  const movies = useMediaStore((state) => state.film);
 
-    fetchCategories();
-  }, [setCategories]);
+  // Fetch data from genre
+  useFetchData(`${import.meta.env.VITE_API_URL}/genre`, setCategories);
+
+  // Fetch data from director
+  useFetchData(`${import.meta.env.VITE_API_URL}/director`, setDirectors);
+
+  // Fetch data from producer
+  useFetchData(`${import.meta.env.VITE_API_URL}/producer`, setProducers);
+
+  // Fetch data from media
+  useFetchData(`${import.meta.env.VITE_API_URL}/media`, setMedia);
   return (
     <>
-      <div className="h-screen flex flex-col justify-center">
+      <section className="my-20 mx-auto">
         <div className="flex justify-center w-full mb-16">
-          <h1 className="flex justify-center font-bold text-red-600 text-3xl">
+          <h1 className="flex justify-center font-bold text-white text-3xl sm:text-5xl">
             Film IUDIgital
           </h1>
         </div>
-        <div className="mt-10 flex justify-center">
-          <CardExample />
+        <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-10 px-10">
+          {movies.map((movie) => (
+            <MovieCard
+              key={movie._id}
+              nombrePelicula={movie.title}
+              description={movie.synopsis}
+              image={movie.coverImage}
+              id={movie._id}
+            />
+          ))}
         </div>
-      </div>
+      </section>
     </>
   );
 };

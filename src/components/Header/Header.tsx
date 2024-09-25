@@ -3,7 +3,6 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link,
   NavbarMenuToggle,
   Dropdown,
   DropdownTrigger,
@@ -14,13 +13,16 @@ import {
   NavbarMenu,
 } from '@nextui-org/react';
 import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom'; // Importa Link y useLocation de react-router-dom
 import { useMediaQuery } from 'react-responsive';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+  const location = useLocation(); // Utiliza useLocation para obtener la ruta actual
   const pathName = location.pathname;
+
   const flechaAbajoIcono = () => {
     return (
       <svg
@@ -73,12 +75,16 @@ export default function Header() {
             <NavbarContent className="gap-6" justify="end">
               <NavbarItem>
                 <Link
-                  href="/"
-                  color={pathName === '/' ? 'primary' : 'foreground'}
+                  to="/"
+                  style={{
+                    textDecoration: 'none',
+                    color: pathName === '/' ? 'primary' : 'inherit',
+                  }}
                 >
                   Inicio
                 </Link>
               </NavbarItem>
+
               <Dropdown className="dark text-white">
                 {DropDownButton('Películas', 'film')}
                 <DropdownMenu
@@ -87,105 +93,140 @@ export default function Header() {
                   aria-label="Peliculas feautures"
                   className="w-auto text-left"
                 >
-                  <DropdownItem
-                    key="filmList"
-                    href="/film/list"
-                    className={pathName === '/film/list' ? 'text-primary' : ''}
-                  >
-                    Listado de películas
+                  <DropdownItem key="filmList">
+                    <Link
+                      to="/film/list"
+                      style={{
+                        textDecoration: 'none',
+                        color:
+                          pathName === '/film/list' ? 'primary' : 'inherit',
+                      }}
+                    >
+                      Listado de películas
+                    </Link>
                   </DropdownItem>
-                  <DropdownItem
-                    key="filmForm"
-                    href="/film/form"
-                    className={pathName === '/film/form' ? 'text-primary' : ''}
-                  >
-                    Agregar películas
+                  <DropdownItem key="filmForm">
+                    <Link
+                      to="/film/form"
+                      style={{
+                        textDecoration: 'none',
+                        color:
+                          pathName === '/film/form' ? 'primary' : 'inherit',
+                      }}
+                    >
+                      Agregar películas
+                    </Link>
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
+
               <Dropdown className="dark text-white">
-                {DropDownButton('Directores', 'directors')}
+                {DropDownButton('Directores', 'director')}
                 <DropdownMenu
                   variant="light"
                   color="primary"
-                  aria-label="Peliculas feautures"
+                  aria-label="Directores features"
                   className="w-auto text-left"
                 >
-                  <DropdownItem
-                    key="filmList"
-                    href="/director/list"
-                    className={
-                      pathName === '/director/list' ? 'text-primary' : ''
-                    }
-                  >
-                    Listado de directores
+                  <DropdownItem key="directorList">
+                    <Link
+                      to="/director/list"
+                      style={{
+                        textDecoration: 'none',
+                        color:
+                          pathName === '/director/list' ? 'primary' : 'inherit',
+                      }}
+                    >
+                      Listado de directores
+                    </Link>
                   </DropdownItem>
-                  <DropdownItem
-                    key="filmForm"
-                    href="/director/form"
-                    className={
-                      pathName === '/director/form' ? 'text-primary' : ''
-                    }
-                  >
-                    Agregar director
+                  <DropdownItem key="directorForm">
+                    <Link
+                      to="/director/form"
+                      style={{
+                        textDecoration: 'none',
+                        color:
+                          pathName === '/director/form' ? 'primary' : 'inherit',
+                      }}
+                    >
+                      Agregar director
+                    </Link>
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
+
               <Dropdown className="dark text-white">
                 {DropDownButton('Productoras', 'producer')}
                 <DropdownMenu
                   variant="light"
                   color="primary"
-                  aria-label="Peliculas feautures"
+                  aria-label="Productoras features"
                   className="w-auto text-left"
                 >
-                  <DropdownItem
-                    key="filmList"
-                    href="/producer/list"
-                    className={
-                      pathName === '/producer/list' ? 'text-primary' : ''
-                    }
-                  >
-                    Listado de productora
+                  <DropdownItem key="producerList">
+                    <Link
+                      to="/producer/list"
+                      style={{
+                        textDecoration: 'none',
+                        color:
+                          pathName === '/producer/list' ? 'primary' : 'inherit',
+                      }}
+                    >
+                      Listado de productoras
+                    </Link>
                   </DropdownItem>
-                  <DropdownItem
-                    key="filmForm"
-                    href="/producer/form"
-                    className={
-                      pathName === '/producer/form' ? 'text-primary' : ''
-                    }
-                  >
-                    Agregar productora
+                  <DropdownItem key="producerForm">
+                    <Link
+                      to="/producer/form"
+                      style={{
+                        textDecoration: 'none',
+                        color:
+                          pathName === '/producer/form' ? 'primary' : 'inherit',
+                      }}
+                    >
+                      Agregar productora
+                    </Link>
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
+
               <NavbarItem>
                 <Dropdown className="dark text-white">
                   {DropDownButton('Géneros', 'genre')}
                   <DropdownMenu
                     variant="light"
                     color="primary"
-                    aria-label="Peliculas feautures"
+                    aria-label="Géneros features"
                     className="w-auto text-left"
                   >
                     <DropdownSection>
-                      <DropdownItem
-                        key="filmList"
-                        href="/genre/list"
-                        className={
-                          pathName === '/genre/list' ? 'text-primary' : ''
-                        }
-                      >
-                        Listado de géneros
+                      <DropdownItem key="genreList">
+                        <Link
+                          to="/genre/list"
+                          style={{
+                            textDecoration: 'none',
+                            color:
+                              pathName === '/genre/list'
+                                ? 'primary'
+                                : 'inherit',
+                          }}
+                        >
+                          Listado de géneros
+                        </Link>
                       </DropdownItem>
-                      <DropdownItem
-                        key="filmForm"
-                        href="/genre/form"
-                        className={
-                          pathName === '/genre/form' ? 'text-primary' : ''
-                        }
-                      >
-                        Agregar género
+                      <DropdownItem key="genreForm">
+                        <Link
+                          to="/genre/form"
+                          style={{
+                            textDecoration: 'none',
+                            color:
+                              pathName === '/genre/form'
+                                ? 'primary'
+                                : 'inherit',
+                          }}
+                        >
+                          Agregar género
+                        </Link>
                       </DropdownItem>
                     </DropdownSection>
                   </DropdownMenu>
@@ -204,12 +245,16 @@ export default function Header() {
             <NavbarMenu className="dark">
               <NavbarItem>
                 <Link
-                  href="/"
-                  color={pathName === '/' ? 'primary' : 'foreground'}
+                  to="/"
+                  style={{
+                    textDecoration: 'none',
+                    color: pathName === '/' ? 'primary' : 'inherit',
+                  }}
                 >
                   Inicio
                 </Link>
               </NavbarItem>
+
               <Dropdown className="dark text-white">
                 {DropDownButton('Películas', 'film')}
                 <DropdownMenu
@@ -218,105 +263,140 @@ export default function Header() {
                   aria-label="Peliculas feautures"
                   className="w-auto text-left"
                 >
-                  <DropdownItem
-                    key="filmList"
-                    href="/film/list"
-                    className={pathName === '/film/list' ? 'text-primary' : ''}
-                  >
-                    Listado de películas
+                  <DropdownItem key="filmList">
+                    <Link
+                      to="/film/list"
+                      style={{
+                        textDecoration: 'none',
+                        color:
+                          pathName === '/film/list' ? 'primary' : 'inherit',
+                      }}
+                    >
+                      Listado de películas
+                    </Link>
                   </DropdownItem>
-                  <DropdownItem
-                    key="filmForm"
-                    href="/film/form"
-                    className={pathName === '/film/form' ? 'text-primary' : ''}
-                  >
-                    Agregar películas
+                  <DropdownItem key="filmForm">
+                    <Link
+                      to="/film/form"
+                      style={{
+                        textDecoration: 'none',
+                        color:
+                          pathName === '/film/form' ? 'primary' : 'inherit',
+                      }}
+                    >
+                      Agregar películas
+                    </Link>
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
+
               <Dropdown className="dark text-white">
-                {DropDownButton('Directores', 'directors')}
+                {DropDownButton('Directores', 'director')}
                 <DropdownMenu
                   variant="light"
                   color="primary"
-                  aria-label="Peliculas feautures"
+                  aria-label="Directores features"
                   className="w-auto text-left"
                 >
-                  <DropdownItem
-                    key="filmList"
-                    href="/director/list"
-                    className={
-                      pathName === '/director/list' ? 'text-primary' : ''
-                    }
-                  >
-                    Listado de directores
+                  <DropdownItem key="directorList">
+                    <Link
+                      to="/director/list"
+                      style={{
+                        textDecoration: 'none',
+                        color:
+                          pathName === '/director/list' ? 'primary' : 'inherit',
+                      }}
+                    >
+                      Listado de directores
+                    </Link>
                   </DropdownItem>
-                  <DropdownItem
-                    key="filmForm"
-                    href="/director/form"
-                    className={
-                      pathName === '/director/form' ? 'text-primary' : ''
-                    }
-                  >
-                    Agregar director
+                  <DropdownItem key="directorForm">
+                    <Link
+                      to="/director/form"
+                      style={{
+                        textDecoration: 'none',
+                        color:
+                          pathName === '/director/form' ? 'primary' : 'inherit',
+                      }}
+                    >
+                      Agregar director
+                    </Link>
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
+
               <Dropdown className="dark text-white">
                 {DropDownButton('Productoras', 'producer')}
                 <DropdownMenu
                   variant="light"
                   color="primary"
-                  aria-label="Peliculas feautures"
+                  aria-label="Productoras features"
                   className="w-auto text-left"
                 >
-                  <DropdownItem
-                    key="filmList"
-                    href="/producer/list"
-                    className={
-                      pathName === '/producer/list' ? 'text-primary' : ''
-                    }
-                  >
-                    Listado de productora
+                  <DropdownItem key="producerList">
+                    <Link
+                      to="/producer/list"
+                      style={{
+                        textDecoration: 'none',
+                        color:
+                          pathName === '/producer/list' ? 'primary' : 'inherit',
+                      }}
+                    >
+                      Listado de productoras
+                    </Link>
                   </DropdownItem>
-                  <DropdownItem
-                    key="filmForm"
-                    href="/producer/form"
-                    className={
-                      pathName === '/producer/form' ? 'text-primary' : ''
-                    }
-                  >
-                    Agregar productora
+                  <DropdownItem key="producerForm">
+                    <Link
+                      to="/producer/form"
+                      style={{
+                        textDecoration: 'none',
+                        color:
+                          pathName === '/producer/form' ? 'primary' : 'inherit',
+                      }}
+                    >
+                      Agregar productora
+                    </Link>
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
+
               <NavbarItem>
                 <Dropdown className="dark text-white">
                   {DropDownButton('Géneros', 'genre')}
                   <DropdownMenu
                     variant="light"
                     color="primary"
-                    aria-label="Peliculas feautures"
+                    aria-label="Géneros features"
                     className="w-auto text-left"
                   >
                     <DropdownSection>
-                      <DropdownItem
-                        key="filmList"
-                        href="/genre/list"
-                        className={
-                          pathName === '/genre/list' ? 'text-primary' : ''
-                        }
-                      >
-                        Listado de géneros
+                      <DropdownItem key="genreList">
+                        <Link
+                          to="/genre/list"
+                          style={{
+                            textDecoration: 'none',
+                            color:
+                              pathName === '/genre/list'
+                                ? 'primary'
+                                : 'inherit',
+                          }}
+                        >
+                          Listado de géneros
+                        </Link>
                       </DropdownItem>
-                      <DropdownItem
-                        key="filmForm"
-                        href="/genre/form"
-                        className={
-                          pathName === '/genre/form' ? 'text-primary' : ''
-                        }
-                      >
-                        Agregar género
+                      <DropdownItem key="genreForm">
+                        <Link
+                          to="/genre/form"
+                          style={{
+                            textDecoration: 'none',
+                            color:
+                              pathName === '/genre/form'
+                                ? 'primary'
+                                : 'inherit',
+                          }}
+                        >
+                          Agregar género
+                        </Link>
                       </DropdownItem>
                     </DropdownSection>
                   </DropdownMenu>

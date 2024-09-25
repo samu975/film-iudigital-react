@@ -13,8 +13,10 @@ import {
 import { AddFilms } from '../../services/filmService';
 import { CreateFilmObject } from '../../types/Film';
 import { useEffect, useState } from 'react';
-import { fetchData, parseDate } from '../../utils/helpers';
+import { parseDate } from '../../utils/helpers';
 import { useCategoriesStore } from '../../store/categoriesStore';
+import { useDirectorStore } from '../../store/directorStore';
+import { useProducerStore } from '../../store/producerStore';
 
 const FilmForm = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -22,7 +24,8 @@ const FilmForm = () => {
   const [value, setValue] = useState<DateValue | null>(null);
 
   const categories = useCategoriesStore((state) => state.categories);
-  const setCategories = useCategoriesStore((state) => state.setCategories);
+  const directors = useDirectorStore((state) => state.directors);
+  const producers = useProducerStore((state) => state.producers);
 
   useEffect(() => {
     const filmIdFromPath = location.pathname.split('/form').pop();
@@ -34,19 +37,6 @@ const FilmForm = () => {
       setIsEditing(false);
     };
   }, []);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const data = await fetchData(`${import.meta.env.VITE_API_URL}/genre`);
-        setCategories(data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-
-    fetchCategories();
-  }, [setCategories]);
 
   useEffect(() => {
     if (isEditing) {
@@ -76,14 +66,14 @@ const FilmForm = () => {
 
   return (
     <>
-      <section className="flex justify-center pt-16 px-10">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <h1 className="text-2xl font-bold mb-14">
+      <section className="flex justify-center pt-16 px-10 w-full">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-4/5 max-w-7xl">
+          <h1 className="text-2xl font-bold mb-14 sm:text-5xl">
             {isEditing
               ? `Editar Pelicula Nombre Pelicula`
               : 'Agregar Nueva Pelicula'}
           </h1>
-          <section className="flex flex-col items-start gap-6 mb-6">
+          <section className="flex flex-col items-start gap-6 mb-6 sm:grid sm:grid-cols-2 sm:items-center">
             <Input
               label="Título"
               {...register('title', { required: 'El titulo es obligatorio' })}
@@ -104,12 +94,12 @@ const FilmForm = () => {
 
             <Textarea
               label="Sinopsis"
-              {...register('sypnosis', {
+              {...register('synopsis', {
                 required: 'La sinopsis es obligatoria',
               })}
               placeholder="Ingrese la sinopsis de la película"
-              isInvalid={errors.sypnosis ? true : false}
-              errorMessage={errors.sypnosis?.message}
+              isInvalid={errors.synopsis ? true : false}
+              errorMessage={errors.synopsis?.message}
             />
             <Input
               label="Link de imagen de portada"
@@ -152,13 +142,13 @@ const FilmForm = () => {
             </Select>
 
             <Select
-              label="Selecciona un directo"
+              label="Selecciona un director"
               onChange={(e) => setFormValue('producer', e.target.value)}
               isInvalid={errors.genre ? true : false}
             >
-              {categories.map((category) => (
-                <SelectItem key={category._id} value={category._id}>
-                  {category.name}
+              {directors.map((director) => (
+                <SelectItem key={director._id} value={director._id}>
+                  {director.name}
                 </SelectItem>
               ))}
             </Select>
@@ -168,12 +158,20 @@ const FilmForm = () => {
               onChange={(e) => setFormValue('director', e.target.value)}
               isInvalid={errors.genre ? true : false}
             >
-              {categories.map((category) => (
-                <SelectItem key={category._id} value={category._id}>
-                  {category.name}
+              {producers.map((producer) => (
+                <SelectItem key={producer._id} value={producer._id}>
+                  {producer.name}
                 </SelectItem>
               ))}
             </Select>
+
+            <RadioGroup
+              label="Selecciona un tipo"
+              onChange={(e) => setFormValue('type', e.target.value)}
+            >
+              <Radio value="movie">Película</Radio>
+              <Radio value="serie">Serie</Radio>
+            </RadioGroup>
           </section>
           <div className="flex justify-center my-6">
             <Button
