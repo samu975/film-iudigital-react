@@ -10,7 +10,6 @@ import {
   DropdownMenu,
   DropdownItem,
   NavbarMenu,
-  MenuItem,
 } from '@nextui-org/react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom'; // Importa Link y useLocation de react-router-dom
@@ -119,7 +118,7 @@ export default function Header() {
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
-              <MenuItem key="directorList">
+              <NavbarItem key="directorList">
                 <Link
                   to="/director/list"
                   style={{
@@ -130,8 +129,8 @@ export default function Header() {
                 >
                   Listado de directores
                 </Link>
-              </MenuItem>
-              <MenuItem key="producerList">
+              </NavbarItem>
+              <NavbarItem key="producerList">
                 <Link
                   to="/producer/list"
                   style={{
@@ -142,9 +141,9 @@ export default function Header() {
                 >
                   Listado de productoras
                 </Link>
-              </MenuItem>
+              </NavbarItem>
               <NavbarItem>
-                <MenuItem key="genreList">
+                <NavbarItem key="genreList">
                   <Link
                     to="/genre/list"
                     style={{
@@ -154,7 +153,7 @@ export default function Header() {
                   >
                     Listado de géneros
                   </Link>
-                </MenuItem>
+                </NavbarItem>
               </NavbarItem>
             </NavbarContent>
           </>
@@ -213,7 +212,7 @@ export default function Header() {
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
-              <MenuItem key="directorList">
+              <NavbarItem key="directorList">
                 <Link
                   to="/director/list"
                   style={{
@@ -224,9 +223,9 @@ export default function Header() {
                 >
                   Listado de directores
                 </Link>
-              </MenuItem>
+              </NavbarItem>
 
-              <MenuItem key="producerList">
+              <NavbarItem key="producerList">
                 <Link
                   to="/producer/list"
                   style={{
@@ -237,10 +236,10 @@ export default function Header() {
                 >
                   Listado de productoras
                 </Link>
-              </MenuItem>
+              </NavbarItem>
 
               <NavbarItem>
-                <MenuItem key="genreList">
+                <NavbarItem key="genreList">
                   <Link
                     to="/genre/list"
                     style={{
@@ -250,7 +249,7 @@ export default function Header() {
                   >
                     Listado de géneros
                   </Link>
-                </MenuItem>
+                </NavbarItem>
               </NavbarItem>
             </NavbarMenu>
           </Navbar>
