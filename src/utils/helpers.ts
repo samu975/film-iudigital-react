@@ -10,3 +10,7 @@ export const fetchData = async (url: string) => {
   const response = await axios.get(url);
   return response.data;
 };
+
+export const dateToString = (date: Date): string => {
+  return new Date(date).toLocaleDateString();
+}
