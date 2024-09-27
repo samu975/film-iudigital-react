@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import {
   Table,
@@ -28,7 +29,7 @@ import {
   updateDirector,
 } from '../../services/directorService';
 
-export default function DirectorCRUD() {
+export default function DirectorForm (){
   const [directors, setDirectors] = useState<Directors[]>([] as Directors[]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [currentDirector, setCurrentDirector] = useState<Directors>({
@@ -210,4 +211,6 @@ export default function DirectorCRUD() {
       </Modal>
     </div>
   );
+  )
+
 }
