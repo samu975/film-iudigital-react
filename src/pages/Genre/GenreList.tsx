@@ -1,7 +1,14 @@
-// components/GenreList.tsx
-
 import { useState, useEffect } from 'react';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button, Tooltip } from "@nextui-org/react";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  Button,
+  Tooltip,
+} from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import { getAllGenres, deleteGenre } from '../../services/genreService';
 import GenreForm from './GenreForm';
@@ -30,7 +37,7 @@ export default function GenreList() {
 
   const handleDelete = async (id: string) => {
     await deleteGenre(id);
-    setGenres(genres.filter(g => g._id !== id));
+    setGenres(genres.filter((g) => g._id !== id));
     toast.success('Género eliminado correctamente');
   };
 
@@ -47,7 +54,15 @@ export default function GenreList() {
 
   return (
     <div>
-      <Button onClick={() => { setIsModalOpen(true); setIsEditing(false); setCurrentGenre(null); }}>Agregar Género</Button>
+      <Button
+        onClick={() => {
+          setIsModalOpen(true);
+          setIsEditing(false);
+          setCurrentGenre(null);
+        }}
+      >
+        Agregar Género
+      </Button>
       <Table aria-label="Tabla de géneros">
         <TableHeader>
           <TableColumn>NOMBRE</TableColumn>
@@ -55,7 +70,7 @@ export default function GenreList() {
           <TableColumn>ACCIONES</TableColumn>
         </TableHeader>
         <TableBody>
-          {genres.map(genre => (
+          {genres.map((genre) => (
             <TableRow key={genre._id}>
               <TableCell>{genre.name}</TableCell>
               <TableCell>{genre.status}</TableCell>
