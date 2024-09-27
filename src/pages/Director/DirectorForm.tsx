@@ -211,6 +211,4 @@ export default function DirectorForm (){
       </Modal>
     </div>
   );
-  )
-
 }

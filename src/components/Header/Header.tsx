@@ -9,8 +9,8 @@ import {
   Button,
   DropdownMenu,
   DropdownItem,
-  DropdownSection,
   NavbarMenu,
+  MenuItem,
 } from '@nextui-org/react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom'; // Importa Link y useLocation de react-router-dom
@@ -119,118 +119,42 @@ export default function Header() {
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
-
-              <Dropdown className="dark text-white">
-                {DropDownButton('Directores', 'director')}
-                <DropdownMenu
-                  variant="light"
-                  color="primary"
-                  aria-label="Directores features"
-                  className="w-auto text-left"
+              <MenuItem key="directorList">
+                <Link
+                  to="/director/list"
+                  style={{
+                    textDecoration: 'none',
+                    color:
+                      pathName === '/director/form' ? 'primary' : 'inherit',
+                  }}
                 >
-                  <DropdownItem key="directorList">
-                    <Link
-                      to="/director/list"
-                      style={{
-                        textDecoration: 'none',
-                        color:
-                          pathName === '/director/list' ? 'primary' : 'inherit',
-                      }}
-                    >
-                      Listado de directores
-                    </Link>
-                  </DropdownItem>
-                  <DropdownItem key="directorForm">
-                    <Link
-                      to="/director/form"
-                      style={{
-                        textDecoration: 'none',
-                        color:
-                          pathName === '/director/form' ? 'primary' : 'inherit',
-                      }}
-                    >
-                      Agregar director
-                    </Link>
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-
-              <Dropdown className="dark text-white">
-                {DropDownButton('Productoras', 'producer')}
-                <DropdownMenu
-                  variant="light"
-                  color="primary"
-                  aria-label="Productoras features"
-                  className="w-auto text-left"
+                  Listado de directores
+                </Link>
+              </MenuItem>
+              <MenuItem key="producerList">
+                <Link
+                  to="/producer/list"
+                  style={{
+                    textDecoration: 'none',
+                    color:
+                      pathName === '/producer/list' ? 'primary' : 'inherit',
+                  }}
                 >
-                  <DropdownItem key="producerList">
-                    <Link
-                      to="/producer/list"
-                      style={{
-                        textDecoration: 'none',
-                        color:
-                          pathName === '/producer/list' ? 'primary' : 'inherit',
-                      }}
-                    >
-                      Listado de productoras
-                    </Link>
-                  </DropdownItem>
-                  <DropdownItem key="producerForm">
-                    <Link
-                      to="/producer/form"
-                      style={{
-                        textDecoration: 'none',
-                        color:
-                          pathName === '/producer/form' ? 'primary' : 'inherit',
-                      }}
-                    >
-                      Agregar productora
-                    </Link>
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-
+                  Listado de productoras
+                </Link>
+              </MenuItem>
               <NavbarItem>
-                <Dropdown className="dark text-white">
-                  {DropDownButton('Géneros', 'genre')}
-                  <DropdownMenu
-                    variant="light"
-                    color="primary"
-                    aria-label="Géneros features"
-                    className="w-auto text-left"
+                <MenuItem key="genreList">
+                  <Link
+                    to="/genre/list"
+                    style={{
+                      textDecoration: 'none',
+                      color: pathName === '/genre/list' ? 'primary' : 'inherit',
+                    }}
                   >
-                    <DropdownSection>
-                      <DropdownItem key="genreList">
-                        <Link
-                          to="/genre/list"
-                          style={{
-                            textDecoration: 'none',
-                            color:
-                              pathName === '/genre/list'
-                                ? 'primary'
-                                : 'inherit',
-                          }}
-                        >
-                          Listado de géneros
-                        </Link>
-                      </DropdownItem>
-                      <DropdownItem key="genreForm">
-                        <Link
-                          to="/genre/form"
-                          style={{
-                            textDecoration: 'none',
-                            color:
-                              pathName === '/genre/form'
-                                ? 'primary'
-                                : 'inherit',
-                          }}
-                        >
-                          Agregar género
-                        </Link>
-                      </DropdownItem>
-                    </DropdownSection>
-                  </DropdownMenu>
-                </Dropdown>
+                    Listado de géneros
+                  </Link>
+                </MenuItem>
               </NavbarItem>
             </NavbarContent>
           </>
@@ -248,7 +172,7 @@ export default function Header() {
                   to="/"
                   style={{
                     textDecoration: 'none',
-                    color: pathName === '/' ? 'primary' : 'inherit',
+                    color: 'white',
                   }}
                 >
                   Inicio
@@ -289,118 +213,44 @@ export default function Header() {
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
-
-              <Dropdown className="dark text-white">
-                {DropDownButton('Directores', 'director')}
-                <DropdownMenu
-                  variant="light"
-                  color="primary"
-                  aria-label="Directores features"
-                  className="w-auto text-left"
+              <MenuItem key="directorList">
+                <Link
+                  to="/director/list"
+                  style={{
+                    textDecoration: 'none',
+                    color:
+                      pathName === '/director/list' ? 'primary' : 'inherit',
+                  }}
                 >
-                  <DropdownItem key="directorList">
-                    <Link
-                      to="/director/list"
-                      style={{
-                        textDecoration: 'none',
-                        color:
-                          pathName === '/director/list' ? 'primary' : 'inherit',
-                      }}
-                    >
-                      Listado de directores
-                    </Link>
-                  </DropdownItem>
-                  <DropdownItem key="directorForm">
-                    <Link
-                      to="/director/form"
-                      style={{
-                        textDecoration: 'none',
-                        color:
-                          pathName === '/director/form' ? 'primary' : 'inherit',
-                      }}
-                    >
-                      Agregar director
-                    </Link>
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+                  Listado de directores
+                </Link>
+              </MenuItem>
 
-              <Dropdown className="dark text-white">
-                {DropDownButton('Productoras', 'producer')}
-                <DropdownMenu
-                  variant="light"
-                  color="primary"
-                  aria-label="Productoras features"
-                  className="w-auto text-left"
+              <MenuItem key="producerList">
+                <Link
+                  to="/producer/list"
+                  style={{
+                    textDecoration: 'none',
+                    color:
+                      pathName === '/producer/list' ? 'primary' : 'inherit',
+                  }}
                 >
-                  <DropdownItem key="producerList">
-                    <Link
-                      to="/producer/list"
-                      style={{
-                        textDecoration: 'none',
-                        color:
-                          pathName === '/producer/list' ? 'primary' : 'inherit',
-                      }}
-                    >
-                      Listado de productoras
-                    </Link>
-                  </DropdownItem>
-                  <DropdownItem key="producerForm">
-                    <Link
-                      to="/producer/form"
-                      style={{
-                        textDecoration: 'none',
-                        color:
-                          pathName === '/producer/form' ? 'primary' : 'inherit',
-                      }}
-                    >
-                      Agregar productora
-                    </Link>
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+                  Listado de productoras
+                </Link>
+              </MenuItem>
 
               <NavbarItem>
-                <Dropdown className="dark text-white">
-                  {DropDownButton('Géneros', 'genre')}
-                  <DropdownMenu
-                    variant="light"
-                    color="primary"
-                    aria-label="Géneros features"
-                    className="w-auto text-left"
+                <MenuItem key="genreList">
+                  <Link
+                    to="/genre/list"
+                    style={{
+                      textDecoration: 'none',
+                      color: pathName === '/genre/list' ? 'primary' : 'inherit',
+                    }}
                   >
-                    <DropdownSection>
-                      <DropdownItem key="genreList">
-                        <Link
-                          to="/genre/list"
-                          style={{
-                            textDecoration: 'none',
-                            color:
-                              pathName === '/genre/list'
-                                ? 'primary'
-                                : 'inherit',
-                          }}
-                        >
-                          Listado de géneros
-                        </Link>
-                      </DropdownItem>
-                      <DropdownItem key="genreForm">
-                        <Link
-                          to="/genre/form"
-                          style={{
-                            textDecoration: 'none',
-                            color:
-                              pathName === '/genre/form'
-                                ? 'primary'
-                                : 'inherit',
-                          }}
-                        >
-                          Agregar género
-                        </Link>
-                      </DropdownItem>
-                    </DropdownSection>
-                  </DropdownMenu>
-                </Dropdown>
+                    Listado de géneros
+                  </Link>
+                </MenuItem>
               </NavbarItem>
             </NavbarMenu>
           </Navbar>
