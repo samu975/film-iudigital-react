@@ -1,8 +1,8 @@
-export type Directors = {
+export type DirectorType = {
   _id?: string;
   name: string;
   status: string;
-  createdAd?: Date;
+  createdAt?: Date;
   updatedAt?: Date;
   __v?: number;
 };
