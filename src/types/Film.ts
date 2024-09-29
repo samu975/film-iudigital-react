@@ -2,7 +2,7 @@ import { DateValue } from "@nextui-org/react";
 import { Directors } from "./Director";
 import { GenreType } from "./Genre";
 import { MediaType } from "./MediaType";
-import { Producer } from "./Producer";
+import { ProducerType } from "./Producer";
 
 export type CreateFilmObject = {
   title: string;
@@ -13,7 +13,7 @@ export type CreateFilmObject = {
   url: string;
   genre: GenreType | null;
   director: Directors | null;
-  producer: Producer | null;
+  producer: ProducerType | null;
   type: MediaType | null;
 };
 
@@ -27,6 +27,6 @@ export type Film = {
   url: string;
   genre: GenreType | null;
   director: Directors | null;
-  producer: Producer | null;
+  producer: ProducerType | null;
   type: MediaType | null;
 };
