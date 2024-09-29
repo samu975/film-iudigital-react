@@ -15,6 +15,8 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom'; // Importa Link y useLocation de react-router-dom
 import { useMediaQuery } from 'react-responsive';
 
+import LogoFilmIUDigital from '../icons/LogoFilmIUDigital'
+
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -41,7 +43,8 @@ export default function Header() {
       <NavbarBrand
         className={`font-bold text-inherit text-xl justify-${position}`}
       >
-        <p className="">FILM IU</p>
+        <LogoFilmIUDigital />
+        {/* <p className="">FILM IU</p> */}
       </NavbarBrand>
     );
   };

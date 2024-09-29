@@ -2,7 +2,7 @@ export type Directors = {
   _id: string;
   name: string;
   status: string;
-  createdAd?: Date;
+  createdAt?: Date;
   updatedAt?: Date;
   __v?: number;
 };

@@ -1,7 +1,12 @@
-export type Producer = {
-  _id: string;
+export enum StatusEnum {
+  ACTIVE = 'activo',
+  INACTIVE = 'inactivo',
+}
+
+export type ProducerType = {
+  _id?: string;
   name: string;
-  status: string;
+  status: StatusEnum;
   slogan: string;
   description: string;
 };

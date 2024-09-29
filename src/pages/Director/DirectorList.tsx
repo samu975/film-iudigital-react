@@ -94,7 +94,7 @@ export default function DirectorList() {
   }
 
   return (
-    <div className="bg-gray-500 text-white p-8 flex flex-col">
+    <div className="bg-gradient-to-r from-gray-600 to-blue-950 text-white p-8 flex flex-col">
       <h1 className="text-3xl font-bold mb-6">Manejo Directores</h1>
       <Button
         onPress={() => {
@@ -108,7 +108,7 @@ export default function DirectorList() {
       </Button>
 
       <div className="">
-        <Table isHeaderSticky aria-label="Directors table" className="bg-gray-800 max-h-[600px] max-w-[600] overflow-scroll">
+        <Table isHeaderSticky  color='primary' aria-label="Directors table" className="max-h-[600px] max-w-[600] overflow-scroll">
           <TableHeader>
             <TableColumn>NOMBRE</TableColumn>
             <TableColumn>ESTADO</TableColumn>
@@ -144,10 +144,10 @@ export default function DirectorList() {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} className="bg-gray-800 text-white">
         <ModalContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <ModalHeader>{isEditing ? 'Edit Director' : 'Add New Director'}</ModalHeader>
+            <ModalHeader>{isEditing ? 'Editar Director' : 'Agregar Director'}</ModalHeader>
             <ModalBody>
               <Input
-                label="Name"
+                label="Nombre"
                 value={currentDirector.name}
                 onChange={(e) => setCurrentDirector({ ...currentDirector, name: e.target.value })}
                 required
