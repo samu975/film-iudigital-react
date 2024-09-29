@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Genre } from '../types/Genre';
+import { GenreType as Genre } from '../types/Genre';
 
 interface CategoriesState {
   categories: Genre[];

@@ -25,9 +25,6 @@ export default function GenreForm({ currentGenre, isEditing, onClose, onSuccess 
     name: '',
     status: 'inactivo',
     description: '',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    __v: 0
   });
 
   useEffect(() => {

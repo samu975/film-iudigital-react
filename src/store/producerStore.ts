@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Producer } from '../types/Producer';
+import { ProducerType as Producer } from '../types/Producer';
 
 interface ProducerState {
   producers: Producer[];

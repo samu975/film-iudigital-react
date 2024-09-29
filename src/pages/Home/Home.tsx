@@ -13,16 +13,9 @@ const Home = () => {
 
   const movies = useMediaStore((state) => state.film);
 
-  // Fetch data from genre
   useFetchData(`${import.meta.env.VITE_API_URL}/genre`, setCategories);
-
-  // Fetch data from director
   useFetchData(`${import.meta.env.VITE_API_URL}/director`, setDirectors);
-
-  // Fetch data from producer
   useFetchData(`${import.meta.env.VITE_API_URL}/producer`, setProducers);
-
-  // Fetch data from media
   useFetchData(`${import.meta.env.VITE_API_URL}/media`, setMedia);
   return (
     <>

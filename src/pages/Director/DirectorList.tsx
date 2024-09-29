@@ -121,7 +121,7 @@ export default function DirectorList() {
               <TableRow key={director._id} className='py-4 hover:bg-gray-700'>
                 <TableCell>{director.name}</TableCell>
                 <TableCell>{director.status}</TableCell>
-                <TableCell>{director?.createdAd ? new Date(director.createdAd).toLocaleDateString() : 'N/A'}</TableCell>
+                <TableCell>{director?.createdAt ? new Date(director.createdAt).toLocaleDateString() : 'N/A'}</TableCell>
                 <TableCell>{director?.updatedAt ? new Date(director.updatedAt).toLocaleDateString() : 'N/A'}</TableCell>
                 <TableCell className="relative flex items-center gap-2">
                   <Tooltip content="Editar Director">

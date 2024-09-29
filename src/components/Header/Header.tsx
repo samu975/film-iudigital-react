@@ -12,7 +12,7 @@ import {
   NavbarMenu,
 } from '@nextui-org/react';
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom'; // Importa Link y useLocation de react-router-dom
+import { Link, useLocation } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 
 import LogoFilmIUDigital from '../icons/LogoFilmIUDigital'
@@ -21,7 +21,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
-  const location = useLocation(); // Utiliza useLocation para obtener la ruta actual
+  const location = useLocation();
   const pathName = location.pathname;
 
   const flechaAbajoIcono = () => {
@@ -44,7 +44,6 @@ export default function Header() {
         className={`font-bold text-inherit text-xl justify-${position}`}
       >
         <LogoFilmIUDigital />
-        {/* <p className="">FILM IU</p> */}
       </NavbarBrand>
     );
   };

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DirectorType } from '../types/Director';
+import { Directors as DirectorType } from '../types/Director';
 export async function getAllDirectors(): Promise<DirectorType[]> {
   const response = await axios.get(import.meta.env.VITE_API_URL + '/director');
   return response.data;
