@@ -1,5 +1,5 @@
 export type Directors = {
-  _id?: string;
+  _id: string;
   name: string;
   status: string;
   createdAd?: Date;

@@ -20,13 +20,13 @@ import { toast } from 'react-toastify'
 
 import DeleteIcon from '../../components/icons/DeleteIcon'
 import EditIcon from '../../components/icons/EditIcon'
-import { DirectorType } from '../../types/Director'
+import { Directors } from '../../types/Director'
 import { getAllDirectors, createDirector, deleteDirector, updateDirector } from '../../services/directorService'
 
 export default function DirectorList() {
-  const [directors, setDirectors] = useState<DirectorType[]>([] as DirectorType[])
+  const [directors, setDirectors] = useState<Directors[]>([] as Directors[])
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [currentDirector, setCurrentDirector] = useState<DirectorType>({ name: '', status: 'inactivo' })
+  const [currentDirector, setCurrentDirector] = useState<Directors>({ name: '', status: 'inactivo' })
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function DirectorList() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (isEditing) {
-      const updated: DirectorType = await updateDirector(currentDirector)
+      const updated: Directors = await updateDirector(currentDirector)
       setDirectors(directors.map(d => d._id === updated._id ? updated : d))
       toast.warn('Director Actualizado', {
         position: "top-right",
@@ -54,7 +54,7 @@ export default function DirectorList() {
         theme: "dark"
       });
     } else {
-      const created: DirectorType = await createDirector(currentDirector)
+      const created: Directors = await createDirector(currentDirector)
       setDirectors([...directors, created])
       toast.info('Director creado', {
         position: "top-right",
@@ -72,7 +72,7 @@ export default function DirectorList() {
     setIsEditing(false)
   }
 
-  const handleEdit = (director: DirectorType) => {
+  const handleEdit = (director: Directors) => {
     setCurrentDirector(director)
     setIsEditing(true)
     setIsModalOpen(true)
@@ -121,7 +121,7 @@ export default function DirectorList() {
               <TableRow key={director._id} className='py-4 hover:bg-gray-700'>
                 <TableCell>{director.name}</TableCell>
                 <TableCell>{director.status}</TableCell>
-                <TableCell>{director?.createdAt ? new Date(director.createdAt).toLocaleDateString() : 'N/A'}</TableCell>
+                <TableCell>{director?.createdAd ? new Date(director.createdAd).toLocaleDateString() : 'N/A'}</TableCell>
                 <TableCell>{director?.updatedAt ? new Date(director.updatedAt).toLocaleDateString() : 'N/A'}</TableCell>
                 <TableCell className="relative flex items-center gap-2">
                   <Tooltip content="Editar Director">

@@ -4,7 +4,4 @@ export type Producer = {
   status: string;
   slogan: string;
   description: string;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
 };

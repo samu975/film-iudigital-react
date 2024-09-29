@@ -18,10 +18,10 @@ export const GetFilmById = async (id: string): Promise<Film> => {
   return response.data;;
 }
 
-export const UpdateFilm = async (FilmObject: CreateFilmObject, filmId:string) => {
+export const UpdateFilm = async (FilmObject: Film, filmId:string): Promise<Film> => {
   const response = await axios.put(import.meta.env.VITE_API_URL + '/media/' + filmId, FilmObject);
 
-  return response;
+  return response.data;
 }
 
 export const DeleteFilm = async (id: string) => {  

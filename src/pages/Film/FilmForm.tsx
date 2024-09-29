@@ -4,64 +4,111 @@ import {
   Button,
   Textarea,
   DatePicker,
-  RadioGroup,
-  Radio,
   DateValue,
   Select,
   SelectItem,
 } from '@nextui-org/react';
-import { AddFilms } from '../../services/filmService';
-import { CreateFilmObject } from '../../types/Film';
+import { AddFilms, GetFilmById, UpdateFilm } from '../../services/filmService';
+import { CreateFilmObject, Film } from '../../types/Film';
 import { useEffect, useState } from 'react';
-import { parseDate } from '../../utils/helpers';
 import { useCategoriesStore } from '../../store/categoriesStore';
 import { useDirectorStore } from '../../store/directorStore';
 import { useProducerStore } from '../../store/producerStore';
+import { useFetchData } from '../../hooks/useFetch';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const FilmForm = () => {
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState<DateValue | null>(null);
+
+  // Control de los valores de los campos con useState
+  const [title, setTitle] = useState('');
+  const [serial, setSerial] = useState('');
+  const [synopsis, setSynopsis] = useState('');
+  const [coverImage, setCoverImage] = useState('');
+  const [releaseYear, setReleaseYear] = useState<DateValue | null>(null);
+  const [url, setUrl] = useState('');
+  const [genre, setGenre] = useState('');
+  const [director, setDirector] = useState('');
+  const [producer, setProducer] = useState('');
+
+  const setCategories = useCategoriesStore((state) => state.setCategories);
+  const setDirectors = useDirectorStore((state) => state.setDirectors);
+  const setProducers = useProducerStore((state) => state.setProducers);
+
+  useFetchData(`${import.meta.env.VITE_API_URL}/genre`, setCategories);
+  useFetchData(`${import.meta.env.VITE_API_URL}/director`, setDirectors);
+  useFetchData(`${import.meta.env.VITE_API_URL}/producer`, setProducers);
 
   const categories = useCategoriesStore((state) => state.categories);
   const directors = useDirectorStore((state) => state.directors);
   const producers = useProducerStore((state) => state.producers);
 
+  const { handleSubmit } = useForm<CreateFilmObject>();
+
+  // Cargar datos en modo edición
   useEffect(() => {
-    const filmIdFromPath = location.pathname.split('/form').pop();
-    if (filmIdFromPath !== '') {
+    const filmIdFromPath = location.pathname.split('/form/').pop();
+    if (filmIdFromPath !== '' && filmIdFromPath !== undefined) {
       setIsEditing(true);
-    }
-
-    return () => {
-      setIsEditing(false);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isEditing) {
-      // Fetch Film info
+      GetFilmById(filmIdFromPath).then((data) => {
+        setTitle(data.title);
+        setSerial(data.serial);
+        setSynopsis(data.synopsis);
+        setCoverImage(data.coverImage);
+        setUrl(data.url);
+        setGenre(data.genre?._id || '');
+        setDirector(data.director?._id || '');
+        setProducer(data.producer?._id || '');
+      });
     }
   }, [isEditing]);
 
-  const {
-    register,
-    handleSubmit,
-    setValue: setFormValue,
-    formState: { errors },
-  } = useForm<CreateFilmObject>();
-
-  const onSubmit = (data: CreateFilmObject) => {
+  const onSubmit = () => {
     setLoading(true);
-    if (isEditing) return;
-    AddFilms(data, `${import.meta.env.VITE_API_URL}/media`);
-    setLoading(false);
+    const formData: CreateFilmObject = {
+      title,
+      serial: serial,
+      synopsis,
+      coverImage,
+      releaseYear: releaseYear as unknown as Date,
+      url,
+      genre: categories.find((category) => category._id === genre) || null,
+      director: directors.find((d) => d._id === director) || null,
+      producer: producers.find((p) => p._id === producer) || null,
+      type: null,
+    };
+
+    if (isEditing) {
+      const filmId = location.pathname.split('/form/').pop();
+      if (filmId) {
+        UpdateFilm(formData as unknown as Film, filmId).finally(() => {
+          setLoading(false);
+          toast.warn('Película Actualizada', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          });
+          setTimeout(() => {
+            navigate('/');
+          }, 3000);
+        });
+      }
+    } else {
+      AddFilms(formData, `${import.meta.env.VITE_API_URL}/media`);
+      setLoading(false);
+    }
   };
 
-  const handleOnChange = (newValue: DateValue) => {
-    setValue(newValue);
-    const parsedDate = parseDate(newValue);
-    setFormValue('releaseYear', parsedDate);
+  const handleDateChange = (newValue: DateValue) => {
+    setReleaseYear(newValue);
   };
 
   return (
@@ -69,70 +116,62 @@ const FilmForm = () => {
       <section className="flex justify-center pt-16 px-10 w-full">
         <form onSubmit={handleSubmit(onSubmit)} className="w-4/5 max-w-7xl">
           <h1 className="text-2xl font-bold mb-14 sm:text-5xl">
-            {isEditing
-              ? `Editar Pelicula Nombre Pelicula`
-              : 'Agregar Nueva Pelicula'}
+            {isEditing ? 'Editar Pelicula' : 'Agregar Nueva Pelicula'}
           </h1>
+
           <section className="flex flex-col items-start gap-6 mb-6 sm:grid sm:grid-cols-2 sm:items-center">
+            {/* Título */}
             <Input
               label="Título"
-              {...register('title', { required: 'El titulo es obligatorio' })}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               placeholder="Ingrese el título de la película"
-              isInvalid={errors.title ? true : false}
-              errorMessage={errors.title?.message}
             />
+
+            {/* Número Serial */}
             <Input
               label="Número Serial"
-              type="number"
-              {...register('serial', {
-                required: 'El número serial es obligatorio',
-              })}
+              value={serial}
+              onChange={(e) => setSerial(e.target.value)}
               placeholder="Ingrese el número serial"
-              isInvalid={errors.serial ? true : false}
-              errorMessage={errors.serial?.message}
             />
 
+            {/* Sinopsis */}
             <Textarea
               label="Sinopsis"
-              {...register('synopsis', {
-                required: 'La sinopsis es obligatoria',
-              })}
+              value={synopsis}
+              onChange={(e) => setSynopsis(e.target.value)}
               placeholder="Ingrese la sinopsis de la película"
-              isInvalid={errors.synopsis ? true : false}
-              errorMessage={errors.synopsis?.message}
             />
+
+            {/* Imagen de portada */}
             <Input
               label="Link de imagen de portada"
-              {...register('coverImage', {
-                required: 'La imagen de portada es obligatoria',
-              })}
+              value={coverImage}
+              onChange={(e) => setCoverImage(e.target.value)}
               placeholder="Ingrese el link de la imagen de portada"
-              isInvalid={errors.coverImage ? true : false}
-              errorMessage={errors.coverImage?.message}
             />
 
+            {/* Fecha de lanzamiento */}
             <DatePicker
               label="Fecha de lanzamiento"
-              isInvalid={errors.releaseYear ? true : false}
-              errorMessage={errors.releaseYear?.message}
-              value={value}
-              onChange={handleOnChange}
+              value={releaseYear}
+              onChange={handleDateChange}
             />
 
+            {/* URL */}
             <Input
               label="URL"
-              {...register('url', {
-                required: 'La URL es obligatoria',
-              })}
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
               placeholder="Ingrese la URL de la película"
-              isInvalid={errors.url ? true : false}
-              errorMessage={errors.url?.message}
             />
 
+            {/* Selección de Categoría */}
             <Select
-              label="Selecciona una categoria"
-              onChange={(e) => setFormValue('genre', e.target.value)}
-              isInvalid={errors.genre ? true : false}
+              label="Selecciona una categoría"
+              value={genre}
+              onChange={(e) => setGenre(e.target.value)}
             >
               {categories.map((category) => (
                 <SelectItem key={category._id} value={category._id}>
@@ -141,10 +180,11 @@ const FilmForm = () => {
               ))}
             </Select>
 
+            {/* Selección de Director */}
             <Select
               label="Selecciona un director"
-              onChange={(e) => setFormValue('producer', e.target.value)}
-              isInvalid={errors.genre ? true : false}
+              value={director}
+              onChange={(e) => setDirector(e.target.value)}
             >
               {directors.map((director) => (
                 <SelectItem key={director._id} value={director._id}>
@@ -153,10 +193,11 @@ const FilmForm = () => {
               ))}
             </Select>
 
+            {/* Selección de Productor */}
             <Select
               label="Selecciona un productor"
-              onChange={(e) => setFormValue('director', e.target.value)}
-              isInvalid={errors.genre ? true : false}
+              value={producer}
+              onChange={(e) => setProducer(e.target.value)}
             >
               {producers.map((producer) => (
                 <SelectItem key={producer._id} value={producer._id}>
@@ -164,15 +205,8 @@ const FilmForm = () => {
                 </SelectItem>
               ))}
             </Select>
-
-            <RadioGroup
-              label="Selecciona un tipo"
-              onChange={(e) => setFormValue('type', e.target.value)}
-            >
-              <Radio value="movie">Película</Radio>
-              <Radio value="serie">Serie</Radio>
-            </RadioGroup>
           </section>
+
           <div className="flex justify-center my-6">
             <Button
               type="submit"
