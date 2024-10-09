@@ -186,8 +186,8 @@ const FilmForm = () => {
               value={director}
               onChange={(e) => setDirector(e.target.value)}
             >
-              {directors.map((director) => (
-                <SelectItem key={director._id} value={director._id}>
+              {directors.map((director, index) => (
+                <SelectItem key={director._id ?? index} value={director._id}>
                   {director.name}
                 </SelectItem>
               ))}
@@ -199,8 +199,8 @@ const FilmForm = () => {
               value={producer}
               onChange={(e) => setProducer(e.target.value)}
             >
-              {producers.map((producer) => (
-                <SelectItem key={producer._id} value={producer._id}>
+              {producers.map((producer, index) => (
+                <SelectItem key={producer._id ?? index} value={producer._id}>
                   {producer.name}
                 </SelectItem>
               ))}
